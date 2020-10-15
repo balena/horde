@@ -288,7 +288,9 @@ defmodule Horde.ProcessesSupervisor do
   end
 
   def send_exit_signal(supervisor, pid, reason) do
-    GenServer.call(supervisor, {:send_exit_signal, pid, reason})
+    GenServer.call(supervisor, {:send_exit_signal, pid, reason}, :infinity)
+  catch
+    :exit, {:noproc, _} -> :error
   end
 
   def terminate_child_by_id(supervisor, child_id) do
